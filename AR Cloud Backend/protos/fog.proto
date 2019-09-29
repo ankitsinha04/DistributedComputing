@@ -1,0 +1,64 @@
+syntax = "proto2";
+
+package fogapi;
+
+service FogAPI {
+    // For fog nodes to register themselves with cloud
+    // params :: ip: string, coordinates: pair(lat, long)
+    // return :: stream regionalFogs: list(ip)
+    // rpc RegisterFogNode(RequestRegisterFog) returns (ResponseRegisterFog);
+
+    // // For fog nodes to leave
+    // // params :: ip: string
+    // // return :: None
+    // rpc RemoveFogNode;
+
+    // // For users to register
+    // // params :: ip: string, coordinates: pair(lat, long)
+    // // return :: stream localFogs: list(list(ip))
+    // rpc RegisterUser;
+
+    // For fog to tag images with their locations
+    // params :: imageId: int32, address: string
+    // return :: None
+    // rpc Tag(RequestTag) returns (Error);
+
+    // // For fog to lookup a location for images
+    // // params :: isUserFog: bool, coordinates: pair(l,l), (optional) image
+    // // return :: images: list(image)
+    rpc Fetch(RequestFetch) returns (ResponseFetch);
+}
+
+
+message Error{
+    required int32 code = 1;
+}
+
+message Coordinates {
+    required int32 lat  = 1;
+    required int32 long = 2;
+}
+
+// message RequestRegisterFog {
+//     required Coordinates coordinates = 1;
+//     required string ip = 2;
+// }
+
+// message ResponseRegisterFog {
+//     required int32 regionId = 1;
+//     repeated string ipList = 2;
+// }
+
+// message RequestTag {
+//     required int32 imageId = 1;
+//     required string address = 2;
+// }
+
+message RequestFetch {
+    required int32 imageId = 1;
+    required Coordinates coordinates = 2;
+}
+
+message ResponseFetch {
+    repeated int32 imageIdList = 1;
+}
